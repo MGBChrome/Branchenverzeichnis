@@ -1,4 +1,5 @@
 ﻿using Branchenverzeichnis.Model;
+using Branchenverzeichnis.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,14 +43,22 @@ namespace Branchenverzeichnis
             var repoIndustry = new RepoIndustry();
             PrintAllIndustries(repoIndustry);
 
-            var newIndustry = new Industry()
+            //var newIndustry = new Industry()
+            //{
+            //    Name = "ExampleIndustry" + DateTime.Now.Ticks
+            //};
+
+            //repoIndustry.EntryIndustry(newIndustry);
+
+            //PrintAllIndustries(repoIndustry);
+
+
+            Console.WriteLine("Print all industries from viewModel");
+            var masterDataViewModel = new MasterDataViewModel();
+            foreach (var industryName in masterDataViewModel.IndustryListNames)
             {
-                Name = "ExampleIndustry" + DateTime.Now.Ticks
-            };
-
-            repoIndustry.EntryIndustry(newIndustry);
-
-            PrintAllIndustries(repoIndustry);
+                Console.WriteLine("Name: " + industryName);
+            }
         }
 
         private static void PrintAllIndustries(RepoIndustry repoIndustry)
