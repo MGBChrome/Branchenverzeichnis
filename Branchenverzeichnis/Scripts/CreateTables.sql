@@ -1,6 +1,10 @@
 use master;
 go
 
+--
+-- Datenbank
+--
+
 If(db_id(N'IndustryDirectory') IS NOT NULL)
 begin
 	drop database IndustryDirectory;
@@ -11,6 +15,10 @@ create database IndustryDirectory;
 go
 
 use IndustryDirectory;
+
+--
+-- Tabellen
+--
 
 create table Company
 (
@@ -48,6 +56,10 @@ create table Industry
 	constraint PK_Industry primary key (IndustryID)
 )
 
+--
+-- Foreign key constraints
+--
+
 alter table Company
 	add constraint FK_Company_Industry foreign key (IndustryID) references Industry(IndustryID);
 
@@ -56,3 +68,13 @@ alter table CompanyProduct
 
 alter table CompanyProduct
 	add constraint FK_CompanyProduct_Product foreign key (ProductID) references Product(ProductID);
+
+--
+-- Unique Constraints
+--
+
+alter table Product
+	add constraint UQ_Product_Name unique ([Name]);
+
+alter table Industry
+	add constraint UQ_Industry_Name unique ([Name]);
