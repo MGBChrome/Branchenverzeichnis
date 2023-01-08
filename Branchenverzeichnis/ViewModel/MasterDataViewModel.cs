@@ -162,11 +162,9 @@ namespace Branchenverzeichnis.ViewModel
             return true;
         }
 
-        public void LoadIndustryList(string searchWord = null)
+        public void LoadIndustryList()
         {
-            var tmpIndustryList = string.IsNullOrEmpty(searchWord)
-                ? _masterDataController.GetIndustryList()
-                : _masterDataController.GetIndustryList().Where(x => x.Name.ToUpper().Contains(searchWord.ToUpper()));
+            var tmpIndustryList = _masterDataController.GetIndustryList();
 
             FillIndustryList(tmpIndustryList);
         }
@@ -269,11 +267,9 @@ namespace Branchenverzeichnis.ViewModel
             return true;
         }
 
-        public void LoadProductList(string searchWord = null)
+        public void LoadProductList()
         {
-            var tmpProductList = string.IsNullOrEmpty(searchWord)
-                ? _masterDataController.GetProductList()
-                : _masterDataController.GetProductList().Where(x => x.Name.ToUpper().Contains(searchWord.ToUpper()));
+            var tmpProductList = _masterDataController.GetProductList();
 
             FillProductList(tmpProductList);
         }
