@@ -21,13 +21,42 @@ namespace Branchenverzeichnis.Controller
         public List<IndustryViewModel> GetIndustryList()
         {
             var industries = _modelIndustry.GetIndustryList();
-            var industryViewModels = industries.Select(i => new IndustryViewModel()
+            var industryViews = industries.Select(i => new IndustryViewModel()
             {
                 IndustryID = i.IndustryID,
                 Name = i.Name
             }).ToList();
 
-            return industryViewModels;
+            return industryViews;
+        }
+
+        public void EntryIndustry(IndustryViewModel industryView)
+        {
+            var industry = new Industry()
+            {
+                Name = industryView.Name
+            };
+
+            _modelIndustry.EntryIndustry(industry);
+        }
+
+        public void UpdateIndustry(IndustryViewModel industryView)
+        {
+            if (industryView == null)
+                return;
+
+            var industry = new Industry()
+            {
+                IndustryID = industryView.IndustryID,
+                Name = industryView.Name
+            };
+
+            _modelIndustry.UpdateIndustry(industry);
+        }
+
+        public void DeleteIndustry(int industryId)
+        {
+            _modelIndustry.DeleteIndustry(industryId);
         }
     }
 }
