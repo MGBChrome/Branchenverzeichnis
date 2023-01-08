@@ -30,17 +30,6 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
-        private ObservableCollection<string> _industryListNames = new ObservableCollection<string>();
-        public ObservableCollection<string> IndustryListNames
-        {
-            get { return new ObservableCollection<string>(_industryList.Select(x => x.Name)); }
-            set
-            {
-                _industryListNames = value;
-                RaisePropertyChanged("IndustryListNames");
-            }
-        }
-
         private IndustryViewModel _selectedIndustry;
 
         public IndustryViewModel SelectedIndustry
@@ -63,17 +52,6 @@ namespace Branchenverzeichnis.ViewModel
             {
                 _productList = value;
                 RaisePropertyChanged("ProductList");
-            }
-        }
-
-        private ObservableCollection<string> _productListNames = new ObservableCollection<string>();
-        public ObservableCollection<string> ProductListNames
-        {
-            get { return new ObservableCollection<string>(_productList.Select(x => x.Name)); }
-            set
-            {
-                _productListNames = value;
-                RaisePropertyChanged("IndustryListNames");
             }
         }
 
@@ -140,8 +118,6 @@ namespace Branchenverzeichnis.ViewModel
             _masterDataController = new MasterDataController();
             LoadIndustryList();
             LoadProductList();
-            IndustryListNames = new ObservableCollection<string>(_industryList.Select(i => i.Name));
-            ProductListNames = new ObservableCollection<string>(_productList.Select(i => i.Name));
             _eIndustryMode = EditMode.Edit;
             _eProductMode = EditMode.Edit;
         }
