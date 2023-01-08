@@ -40,10 +40,10 @@ namespace Branchenverzeichnis.Model
         }
 
         // Delete
-        public void DeleteIndustry(int industryId)
+        public void DeleteProduct(int productId)
         {
-            var industry = _context.Industry.SingleOrDefault(x => x.IndustryID == industryId);
-            _context.Industry.Remove(industry);
+            var product = _context.Product.SingleOrDefault(x => x.ProductID == productId);
+            _context.Product.Remove(product);
             _context.SaveChanges();
         }
     }

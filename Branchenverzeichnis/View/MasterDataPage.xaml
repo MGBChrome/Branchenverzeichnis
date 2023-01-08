@@ -38,16 +38,13 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-
-        <!--<Button Grid.Row="0" Grid.Column="0" Width="120" Content="Neuer Eintrag" Margin="5,0,5,5" HorizontalAlignment="Right" Command="{Binding DeleteIndustry}"/>-->
-
         <Button Grid.Row="0" Grid.Column="0" Content="Neuer Eintrag" Margin="5,0" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Style="{StaticResource ToggleButtonStyle}" Background="{Binding NewEntryBackground}" Command="{Binding NewEntry}" />
+                Style="{StaticResource ToggleButtonStyle}" Background="{Binding NewIndustryEntryBackground}" Command="{Binding NewIndustryEntry}" />
         <ListView x:Name="IndustryList" Grid.Column="0" Grid.Row="1" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
                 ScrollViewer.IsDeferredScrollingEnabled="True" AlternationCount="2" Width="Auto" Margin="5,5,5,10" 
                 DataContext="{StaticResource ViewModel}"
                 ItemsSource="{Binding IndustryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding SelectedIndustry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnabled}">
+                SelectedItem="{Binding SelectedIndustry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsIndustryEnabled}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name, Mode=TwoWay}" Width="300" />
@@ -55,7 +52,25 @@
             </ListView.View>
         </ListView>
         <TextBox Grid.Row="2" Grid.Column="0" Margin="5" Text="{Binding SelectedIndustry.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button Grid.Row="3" Grid.Column="0" Width="120" HorizontalAlignment="Center" Content="Speichern" Margin="5,0,5,5" Command="{Binding SaveIndustry}"/>
-        <Button Grid.Row="3" Grid.Column="0" Width="120" Content="Löschen" Margin="5,0,5,5" HorizontalAlignment="Right" Command="{Binding DeleteIndustry}" IsEnabled="{Binding IsEnabled}"/>
+        <Button Grid.Row="3" Grid.Column="0" Width="120" Content="Speichern" Margin="5,0,5,5" HorizontalAlignment="Right" Command="{Binding SaveIndustry}"/>
+        <Button Grid.Row="3" Grid.Column="0" Width="120" Content="Löschen" Margin="5,0,5,5" HorizontalAlignment="Center" Command="{Binding DeleteIndustry}" IsEnabled="{Binding IsIndustryEnabled}"/>
+
+        
+        <Button Grid.Row="0" Grid.Column="1" Content="Neuer Eintrag" Margin="5,0" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                Style="{StaticResource ToggleButtonStyle}" Background="{Binding NewProductEntryBackground}" Command="{Binding NewProductEntry}" />
+        <ListView x:Name="ProductList" Grid.Row="1" Grid.Column="2" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
+                ScrollViewer.IsDeferredScrollingEnabled="True" AlternationCount="2" Width="Auto" Margin="5,5,5,10" 
+                DataContext="{StaticResource ViewModel}"
+                ItemsSource="{Binding ProductList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsProductEnabled}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name, Mode=TwoWay}" Width="300" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding SelectedProduct.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Grid.Row="3" Grid.Column="1" Width="120" Content="Speichern" Margin="5,0,5,5" HorizontalAlignment="Right" Command="{Binding SaveProduct}"/>
+        <Button Grid.Row="3" Grid.Column="1" Width="120" Content="Löschen" Margin="5,0,5,5" HorizontalAlignment="Center" Command="{Binding DeleteProduct}" IsEnabled="{Binding IsProductEnabled}"/>
     </Grid>
 </Page>

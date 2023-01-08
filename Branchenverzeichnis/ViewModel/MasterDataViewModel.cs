@@ -13,7 +13,8 @@ namespace Branchenverzeichnis.ViewModel
     public class MasterDataViewModel : ObservableObject
     {
         private enum EditMode { New, Edit };
-        private EditMode _eMode;
+        private EditMode _eIndustryMode;
+        private EditMode _eProductMode;
 
         private MasterDataController _masterDataController;
 
@@ -52,26 +53,84 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
-        #region ViewControl
-        private SolidColorBrush _newEntryBackground = new SolidColorBrush(Colors.White);
-        public SolidColorBrush NewEntryBackground
+
+        private ObservableCollection<ProductViewModel> _productList = new ObservableCollection<ProductViewModel>();
+
+        public ObservableCollection<ProductViewModel> ProductList
         {
-            get { return _newEntryBackground; }
+            get { return _productList; }
             set
             {
-                _newEntryBackground = value;
-                RaisePropertyChanged("NewEntryBackground");
+                _productList = value;
+                RaisePropertyChanged("ProductList");
             }
         }
 
-        private bool _isEnabled = true;
-        public bool IsEnabled
+        private ObservableCollection<string> _productListNames = new ObservableCollection<string>();
+        public ObservableCollection<string> ProductListNames
         {
-            get { return _isEnabled; }
+            get { return new ObservableCollection<string>(_productList.Select(x => x.Name)); }
             set
             {
-                _isEnabled = value;
-                RaisePropertyChanged("IsEnabled");
+                _productListNames = value;
+                RaisePropertyChanged("IndustryListNames");
+            }
+        }
+
+        private ProductViewModel _selectedProduct;
+
+        public ProductViewModel SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set
+            {
+                _selectedProduct = value;
+                RaisePropertyChanged("SelectedProduct");
+            }
+        }
+
+        #region ViewControl
+        private SolidColorBrush _newIndustryEntryBackground = new SolidColorBrush(Colors.White);
+        public SolidColorBrush NewIndustryEntryBackground
+        {
+            get { return _newIndustryEntryBackground; }
+            set
+            {
+                _newIndustryEntryBackground = value;
+                RaisePropertyChanged("NewIndustryEntryBackground");
+            }
+        }
+
+        private SolidColorBrush _newProductEntryBackground = new SolidColorBrush(Colors.White);
+        public SolidColorBrush NewProductEntryBackground
+        {
+            get { return _newProductEntryBackground; }
+            set
+            {
+                _newProductEntryBackground = value;
+                RaisePropertyChanged("NewProductEntryBackground");
+            }
+        }
+
+        private bool _isIndustryEnabled = true;
+        public bool IsIndustryEnabled
+        {
+            get { return _isIndustryEnabled; }
+            set
+            {
+                _isIndustryEnabled = value;
+                RaisePropertyChanged("IsIndustryEnabled");
+            }
+        }
+
+        private bool _isProductEnabled = true;
+        public bool IsProductEnabled
+        {
+            get { return _isProductEnabled; }
+            set
+            {
+                _isProductEnabled = value;
+                RaisePropertyChanged("IsProductEnabled");
             }
         }
         #endregion
@@ -80,26 +139,22 @@ namespace Branchenverzeichnis.ViewModel
         {
             _masterDataController = new MasterDataController();
             LoadIndustryList();
+            LoadProductList();
             IndustryListNames = new ObservableCollection<string>(_industryList.Select(i => i.Name));
-            _eMode = EditMode.Edit;
+            ProductListNames = new ObservableCollection<string>(_productList.Select(i => i.Name));
+            _eIndustryMode = EditMode.Edit;
+            _eProductMode = EditMode.Edit;
         }
 
         private void RefreshIndustryList()
         {
             IndustryList.Clear();
-            //GetIndustryList(SearchWord);
             LoadIndustryList();
         }
 
         private bool ValidateIndustryInput(IndustryViewModel industryView)
         {
-            if (string.IsNullOrEmpty(industryView.Name))
-            {
-                System.Windows.Forms.MessageBox.Show($"Bitte alle Felder komplett ausfüllen!", "Hinweis", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                return false;
-            }
-            return true;
+            return ValidateInput(industryView.Name);
         }
 
         private bool CanExecute()
@@ -124,20 +179,20 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
-        private void NewEntryExecute()
+        private void NewIndustryEntryExecute()
         {
             SelectedIndustry = null;
-            if (_eMode == EditMode.Edit)
+            if (_eIndustryMode == EditMode.Edit)
             {
-                _eMode = EditMode.New;
-                NewEntryBackground = Brushes.Green;
-                IsEnabled = false;
+                _eIndustryMode = EditMode.New;
+                NewIndustryEntryBackground = Brushes.Green;
+                IsIndustryEnabled = false;
             }
             else
             {
-                _eMode = EditMode.Edit;
-                NewEntryBackground = Brushes.White;
-                IsEnabled = true;
+                _eIndustryMode = EditMode.Edit;
+                NewIndustryEntryBackground = Brushes.White;
+                IsIndustryEnabled = true;
             }
 
             if (SelectedIndustry != null)
@@ -146,14 +201,14 @@ namespace Branchenverzeichnis.ViewModel
             SelectedIndustry = new IndustryViewModel();
         }
 
-        public ICommand NewEntry
+        public ICommand NewIndustryEntry
         {
-            get { return new RelayCommand(NewEntryExecute, CanExecute); }
+            get { return new RelayCommand(NewIndustryEntryExecute, CanExecute); }
         }
 
-        private void SaveExecute()
+        private void SaveIndustryExecute()
         {
-            if (_eMode == EditMode.Edit)
+            if (_eIndustryMode == EditMode.Edit)
             {
                 if (SelectedIndustry == null)
                     return;
@@ -175,7 +230,7 @@ namespace Branchenverzeichnis.ViewModel
 
         public ICommand SaveIndustry
         {
-            get { return new RelayCommand(SaveExecute, CanExecute); }
+            get { return new RelayCommand(SaveIndustryExecute, CanExecute); }
         }
 
         private void DeleteIndustryExecute()
@@ -190,6 +245,113 @@ namespace Branchenverzeichnis.ViewModel
         public ICommand DeleteIndustry
         {
             get { return new RelayCommand(DeleteIndustryExecute, CanExecute); }
+        }
+
+        private void RefreshProductList()
+        {
+            ProductList.Clear();
+            LoadProductList();
+        }
+
+        private bool ValidateProductInput(ProductViewModel productView)
+        {
+            return ValidateInput(productView.Name);
+        }
+
+        private static bool ValidateInput(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                System.Windows.Forms.MessageBox.Show($"Bitte alle Felder komplett ausfüllen!", "Hinweis", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return false;
+            }
+            return true;
+        }
+
+        public void LoadProductList(string searchWord = null)
+        {
+            var tmpProductList = string.IsNullOrEmpty(searchWord)
+                ? _masterDataController.GetProductList()
+                : _masterDataController.GetProductList().Where(x => x.Name.ToUpper().Contains(searchWord.ToUpper()));
+
+            FillProductList(tmpProductList);
+        }
+
+        private void FillProductList(IEnumerable<ProductViewModel> products)
+        {
+            foreach (var product in products)
+            {
+                ProductList.Add(product);
+            }
+        }
+
+        private void NewProductEntryExecute()
+        {
+            SelectedProduct = null;
+            if (_eProductMode == EditMode.Edit)
+            {
+                _eProductMode = EditMode.New;
+                NewProductEntryBackground = Brushes.Green;
+                IsProductEnabled = false;
+            }
+            else
+            {
+                _eProductMode = EditMode.Edit;
+                NewProductEntryBackground = Brushes.White;
+                IsProductEnabled = true;
+            }
+
+            if (SelectedProduct != null)
+                return;
+
+            SelectedProduct = new ProductViewModel();
+        }
+
+        public ICommand NewProductEntry
+        {
+            get { return new RelayCommand(NewProductEntryExecute, CanExecute); }
+        }
+
+        private void SaveProductExecute()
+        {
+            if (_eProductMode == EditMode.Edit)
+            {
+                if (SelectedProduct == null)
+                    return;
+                if (!ValidateProductInput(SelectedProduct))
+                    return;
+
+                _masterDataController.UpdateProduct(SelectedProduct);
+            }
+            else
+            {
+                if (!ValidateProductInput(SelectedProduct))
+                    return;
+
+                _masterDataController.EntryProduct(SelectedProduct);
+            }
+
+            RefreshProductList();
+        }
+
+        public ICommand SaveProduct
+        {
+            get { return new RelayCommand(SaveProductExecute, CanExecute); }
+        }
+
+        private void DeleteProductExecute()
+        {
+            if (SelectedProduct == null)
+                return;
+
+            _masterDataController.DeleteProduct(SelectedProduct.ProductID);
+            RefreshProductList();
+        }
+
+        public ICommand DeleteProduct
+        {
+            get { return new RelayCommand(DeleteProductExecute, CanExecute); }
         }
     }
 }
