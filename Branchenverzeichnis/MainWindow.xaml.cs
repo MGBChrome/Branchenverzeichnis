@@ -11,12 +11,13 @@ namespace Branchenverzeichnis
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Content = new CompaniesPage();
         }
 
         
         private void OpenCompanyPage_Click(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Content = new CompaniesPage();
         }
 
         private void OpenMasterData_Click(object sender, RoutedEventArgs e)

@@ -1,0 +1,102 @@
+﻿<Page x:Class="Branchenverzeichnis.View.CompaniesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Branchenverzeichnis.View"
+      xmlns:ViewModel="clr-namespace:Branchenverzeichnis.ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="1200"
+      Title="CompaniesPage">
+    <Page.DataContext>
+        <ViewModel:IndustryDirectoryViewModel/>
+    </Page.DataContext>
+
+    <Page.Resources>
+        <ViewModel:IndustryDirectoryViewModel x:Key="ViewModel"/>
+
+        <Style x:Key="ToggleButtonStyle"  TargetType="{x:Type Button}">
+            <Style.Triggers>
+                <Trigger Property="Background" Value="Green">
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid DataContext="{StaticResource ViewModel}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="CompanyList" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="3" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
+                ScrollViewer.IsDeferredScrollingEnabled="True" AlternationCount="2" Width="Auto" Margin="5,5,5,10" 
+                DataContext="{StaticResource ViewModel}"
+                ItemsSource="{Binding CompanyList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedCompany, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnabled}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name, Mode=TwoWay}" Width="100" />
+                    <GridViewColumn Header="Telefonnummer" DisplayMemberBinding="{Binding Phonenumber, Mode=TwoWay}" Width="100"/>
+                    <GridViewColumn Header="Strasse" DisplayMemberBinding="{Binding Street, Mode=TwoWay}" Width="130"/>
+                    <GridViewColumn Header="PLZ" DisplayMemberBinding="{Binding PLZ, Mode=TwoWay}" Width="60"/>
+                    <GridViewColumn Header="Ort" DisplayMemberBinding="{Binding Location, Mode=TwoWay}" Width="100"/>
+                    <GridViewColumn Header="Vorname CEO" DisplayMemberBinding="{Binding CeoFirstName, Mode=TwoWay}" Width="100"/>
+                    <GridViewColumn Header="Nachname CEO" DisplayMemberBinding="{Binding CeoLastName, Mode=TwoWay}" Width="100"/>
+                    <GridViewColumn Header="Branche" DisplayMemberBinding="{Binding IndustryName, Mode=TwoWay}" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <GroupBox x:Name="GrpIndustryDirectory" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="0,0,5,5">
+            <GroupBox.Header>
+                <TextBlock Text="Unternehmen"  VerticalAlignment="Bottom"/>
+            </GroupBox.Header>
+            <Grid DataContext="{StaticResource ViewModel}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label x:Name="LblCompName" Grid.Row="0" Grid.Column="0" Content="Name" />
+                <TextBox x:Name="TxbCompName" Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label x:Name="LblCompPhonenumber" Grid.Row="1" Grid.Column="0" Content="Telefonnummer"/>
+                <TextBox x:Name="TxbCompPhonenumber" Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.Phonenumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label x:Name="LblCompStreet" Grid.Row="2" Grid.Column="0" Content="Strasse"/>
+                <TextBox x:Name="TxbCompStreet" Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label x:Name="LblCompPlz" Grid.Row="3" Grid.Column="0" Content="PLZ"/>
+                <TextBox x:Name="TxbCompPlz" Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.PLZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label x:Name="LblCompPlace" Grid.Row="4" Grid.Column="0" Content="Wohnort"/>
+                <TextBox x:Name="TxbCompPlace" Grid.Row="4" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label x:Name="LblCompFirstName" Grid.Row="5" Grid.Column="0" Content="Vorname CEO"/>
+                <TextBox x:Name="TxbCompFirstName" Grid.Row="5" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.CeoFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label x:Name="LblCompLastName" Grid.Row="6" Grid.Column="0" Content="Nachname CEO"/>
+                <TextBox x:Name="TxbCompLastName" Grid.Row="6" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.CeoLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label x:Name="LblCompWorkPlace" Grid.Row="7" Grid.Column="0" Content="Branche"/>
+                <ComboBox x:Name="TxbCompWorkPlace" Grid.Row="7" Grid.Column="1" Margin="5" 
+                          ItemsSource="{Binding IndustryListNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          Text="{Binding SelectedCompany.IndustryName, Mode=TwoWay}"/>
+            </Grid>
+        </GroupBox>
+        <Button x:Name="BtnDelete" Grid.Row="3" Grid.Column="4" Width="120" Content="Löschen" Margin="5,0,5,5" HorizontalAlignment="Right" IsEnabled="{Binding IsEnabled}" Command="{Binding Delete}"/>
+    </Grid>
+</Page>

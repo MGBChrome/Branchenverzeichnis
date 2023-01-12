@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Branchenverzeichnis"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="485" Width="1200">
     <Grid>
         <StackPanel Orientation="Horizontal" Height="35" VerticalAlignment="Top">
             <Button Content="Unternehmen" Click="OpenCompanyPage_Click" />
             <Button Content="Stammdaten" Click="OpenMasterData_Click" />
         </StackPanel>
-        <Frame x:Name="MainFrame" Margin="0,35,0,0" />
+        <Frame x:Name="MainFrame" Margin="0,35,0,0" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

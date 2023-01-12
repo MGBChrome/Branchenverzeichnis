@@ -34,6 +34,11 @@ namespace Branchenverzeichnis.Controller
 
         public void EntryIndustry(IndustryViewModel industryView)
         {
+            if (industryView == null)
+            {
+                return;
+            }
+
             var industry = new Industry()
             {
                 Name = industryView.Name
@@ -76,6 +81,11 @@ namespace Branchenverzeichnis.Controller
 
         public void EntryProduct(ProductViewModel productView)
         {
+            if (productView == null)
+            {
+                return;
+            }
+
             var product = new Product()
             {
                 Name = productView.Name
