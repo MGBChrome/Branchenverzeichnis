@@ -12,7 +12,6 @@ namespace Branchenverzeichnis.ViewModel
 {
     public class MasterDataViewModel : ObservableObject
     {
-        private enum EditMode { New, Edit };
         private EditMode _eIndustryMode;
         private EditMode _eProductMode;
 

@@ -6,12 +6,12 @@
       xmlns:local="clr-namespace:Branchenverzeichnis.View"
       xmlns:ViewModel="clr-namespace:Branchenverzeichnis.ViewModel"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="1200"
+      d:DesignHeight="600" d:DesignWidth="1200"
       Title="CompaniesPage">
     <Page.DataContext>
         <ViewModel:IndustryDirectoryViewModel/>
     </Page.DataContext>
-
+    
     <Page.Resources>
         <ViewModel:IndustryDirectoryViewModel x:Key="ViewModel"/>
 
@@ -36,11 +36,19 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="CompanyList" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="3" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
+        <Label Grid.Row="0" Grid.Column="0" Content="Name" Margin="5,5,0,0"/>
+        <Button Grid.Row="0" Grid.Column="5" Content="Neuer Eintrag" Margin="5,0" Height="25" VerticalAlignment="Bottom" 
+                Style="{StaticResource ToggleButtonStyle}" Background="{Binding NewEntryBackground}" Command="{Binding NewEntry}" />
+        <TextBox x:Name="TxbSearch" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,0,0,0" IsEnabled="{Binding IsEnabled}" Text="{Binding SearchWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button x:Name="BtnSearch" Grid.Row="1" Grid.Column="3" Content="Suchen" Margin="5,0,5,0" IsEnabled="{Binding IsEnabled}" Command="{Binding Search}"/>
+        <ListView x:Name="CompanyList" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="6" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
                 ScrollViewer.IsDeferredScrollingEnabled="True" AlternationCount="2" Width="Auto" Margin="5,5,5,10" 
                 DataContext="{StaticResource ViewModel}"
                 ItemsSource="{Binding CompanyList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -85,18 +93,35 @@
                 <TextBox x:Name="TxbCompStreet" Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label x:Name="LblCompPlz" Grid.Row="3" Grid.Column="0" Content="PLZ"/>
                 <TextBox x:Name="TxbCompPlz" Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.PLZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label x:Name="LblCompPlace" Grid.Row="4" Grid.Column="0" Content="Wohnort"/>
+                <Label x:Name="LblCompPlace" Grid.Row="4" Grid.Column="0" Content="Ort"/>
                 <TextBox x:Name="TxbCompPlace" Grid.Row="4" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.Location, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label x:Name="LblCompFirstName" Grid.Row="5" Grid.Column="0" Content="Vorname CEO"/>
                 <TextBox x:Name="TxbCompFirstName" Grid.Row="5" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.CeoFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label x:Name="LblCompLastName" Grid.Row="6" Grid.Column="0" Content="Nachname CEO"/>
                 <TextBox x:Name="TxbCompLastName" Grid.Row="6" Grid.Column="1" Margin="5" Text="{Binding SelectedCompany.CeoLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label x:Name="LblCompWorkPlace" Grid.Row="7" Grid.Column="0" Content="Branche"/>
+                <Label x:Name="LblCompIndustry" Grid.Row="7" Grid.Column="0" Content="Branche"/>
                 <ComboBox x:Name="TxbCompWorkPlace" Grid.Row="7" Grid.Column="1" Margin="5" 
                           ItemsSource="{Binding IndustryListNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                           Text="{Binding SelectedCompany.IndustryName, Mode=TwoWay}"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="BtnDelete" Grid.Row="3" Grid.Column="4" Width="120" Content="Löschen" Margin="5,0,5,5" HorizontalAlignment="Right" IsEnabled="{Binding IsEnabled}" Command="{Binding Delete}"/>
+        <Label Grid.Column="4" Grid.Row="3" Content="Produkte des Unternehmens" Margin="5,5,0,0"/>
+        <ComboBox x:Name="TxbCompProduct" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" Margin="5" 
+                          ItemsSource="{Binding ProductListNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          Text="{Binding SelectedProduct.IndustryName, Mode=TwoWay}"/>
+        <ListView x:Name="ProductList" Grid.Column="4" Grid.Row="5" Grid.ColumnSpan="2" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
+                ScrollViewer.IsDeferredScrollingEnabled="True" AlternationCount="2" Width="Auto" Margin="5,5,5,10" 
+                DataContext="{StaticResource ViewModel}"
+                ItemsSource="{Binding ProductList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectedItem="{Binding SelectedProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnabled}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name, Mode=TwoWay}" Width="300" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="BtnDeleteProduct" Grid.Row="6" Grid.Column="4" Width="140" Content="Produkt Wegnehmen" Margin="5,0,5,5" HorizontalAlignment="Right" IsEnabled="{Binding IsEnabled}" Command="{Binding Delete}"/>
+        <Button x:Name="BtnDeleteCompany" Grid.Row="7" Grid.Column="4" Width="140" Content="Unternehmen Löschen" Margin="5,0,5,5" HorizontalAlignment="Right" IsEnabled="{Binding IsEnabled}" Command="{Binding Delete}"/>
+        <Button x:Name="BtnSave" Grid.Row="7" Grid.Column="5" Content="Alles Speichern" Margin="5,0,5,5" Command="{Binding Save}"/>
     </Grid>
 </Page>

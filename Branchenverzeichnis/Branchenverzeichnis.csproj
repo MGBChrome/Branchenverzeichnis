@@ -74,6 +74,7 @@
     <Compile Include="Helper\ObservableObject.cs" />
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Model\RepoCompany.cs" />
+    <Compile Include="Model\RepoCompanyProduct.cs" />
     <Compile Include="ViewModel\IndustryDirectoryViewModel.cs" />
     <Compile Include="ViewModel\MasterDataViewModel.cs" />
     <Compile Include="View\CompaniesPage.xaml.cs">

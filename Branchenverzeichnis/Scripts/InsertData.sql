@@ -38,7 +38,7 @@ SET IDENTITY_INSERT [dbo].[Company] ON
 INSERT [dbo].[Company] ([CompanyID], [Name], [Phonenumber], [Street], [PLZ], [Location], [CeoFirstName], [CeoLastName], [IndustryID]) 
 	VALUES (1, N'SBB', N'041123123', N'Bernerstrasse 1', N'3000', N'Bern', N'Mike', N'Mueller', 1)
 INSERT [dbo].[Company] ([CompanyID], [Name], [Phonenumber], [Street], [PLZ], [Location], [CeoFirstName], [CeoLastName], [IndustryID]) 
-	VALUES (2, N'Post', N'041123123', N'Zuercherstrasse 5', N'8000', N'Zürich', N'Voktor', N'Giacobbo', 2)
+	VALUES (2, N'Post', N'041123123', N'Zuercherstrasse 5', N'8000', N'Zürich', N'Viktor', N'Giacobbo', 2)
 INSERT [dbo].[Company] ([CompanyID], [Name], [Phonenumber], [Street], [PLZ], [Location], [CeoFirstName], [CeoLastName], [IndustryID]) 
 	VALUES (3, N'K Kiosk', N'041123123', N'Baslerstrasse 12', N'5000', N'Basel', N'Markus', N'Meier', 3)
 

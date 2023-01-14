@@ -11,6 +11,7 @@ namespace Branchenverzeichnis.Controller
     public class CompanyController
     {
         private RepoCompany _modelCompany;
+        private RepoCompanyProduct _modelCompanyProduct;
 
         public CompanyController()
         {
@@ -32,7 +33,7 @@ namespace Branchenverzeichnis.Controller
                 CeoFirstName = c.CeoFirstName,
                 CeoLastName = c.CeoLastName,
                 IndustryID = c.IndustryID,
-                IndustryName = c.Industry.Name
+                IndustryName = c.Industry?.Name
             }).ToList();
 
             return companyViews;
@@ -72,11 +73,7 @@ namespace Branchenverzeichnis.Controller
                 Location = companyView.Location,
                 CeoFirstName = companyView.CeoFirstName,
                 CeoLastName = companyView.CeoLastName,
-                Industry = new Industry()
-                {
-                    IndustryID = companyView.IndustryID ?? 0,
-                    Name = companyView.IndustryName,
-                }
+                IndustryID = companyView.IndustryID
             };
         }
 

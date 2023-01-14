@@ -8,12 +8,19 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Branchenverzeichnis.ViewModel
 {
+    public enum EditMode { New, Edit };
+
     public class IndustryDirectoryViewModel : ObservableObject
     {
+        private EditMode _eMode;
+
         private CompanyController _companyController;
         private MasterDataController _masterDataController;
 
@@ -74,17 +81,60 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
+        #region ViewControl
+        private SolidColorBrush _newEntryBackground = new SolidColorBrush(Colors.White);
+        public SolidColorBrush NewEntryBackground
+        {
+            get { return _newEntryBackground; }
+            set
+            {
+                _newEntryBackground = value;
+                RaisePropertyChanged("NewEntryBackground");
+            }
+        }
+
+        private bool _isEnabled = true;
+        public bool IsEnabled
+        {
+            get { return _isEnabled; }
+            set
+            {
+                _isEnabled = value;
+                RaisePropertyChanged("IsEnabled");
+            }
+        }
+        #endregion
+
         public IndustryDirectoryViewModel()
         {
             _companyController = new CompanyController();
             _masterDataController = new MasterDataController();
             LoadCompanyList();
             LoadIndustryList();
+            _eMode = EditMode.Edit;
         }
         private void RefreshCompanyList()
         {
             CompanyList.Clear();
             LoadCompanyList(SearchWord);
+        }
+
+        private bool ValidateCompanyInput(CompanyViewModel companyView)
+        {
+            if (string.IsNullOrEmpty(companyView.Name) ||
+                string.IsNullOrEmpty(companyView.Phonenumber) ||
+                string.IsNullOrEmpty(companyView.Street) ||
+                string.IsNullOrEmpty(companyView.PLZ) ||
+                string.IsNullOrEmpty(companyView.Location) ||
+                string.IsNullOrEmpty(companyView.CeoFirstName) ||
+                string.IsNullOrEmpty(companyView.CeoLastName))
+            {
+                MessageBox.Show($"Bitte alle Felder komplett ausfüllen!", "Hinweis", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return false;
+            }
+
+            return true;
         }
 
         private bool CanExecute()
@@ -123,6 +173,69 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
+        private void NewEntryExecute()
+        {
+            SelectedCompany = null;
+            if (_eMode == EditMode.Edit)
+            {
+                _eMode = EditMode.New;
+                NewEntryBackground = Brushes.Green;
+                IsEnabled = false;
+            }
+            else
+            {
+                _eMode = EditMode.Edit;
+                NewEntryBackground = Brushes.White;
+                IsEnabled = true;
+            }
+
+            if (SelectedCompany != null)
+                return;
+
+            SelectedCompany = new CompanyViewModel();
+        }
+
+        public ICommand NewEntry
+        {
+            get { return new RelayCommand(NewEntryExecute, CanExecute); }
+        }
+
+        private void SaveExecute()
+        {
+            if (_eMode == EditMode.Edit)
+            {
+                if (SelectedCompany == null)
+                    return;
+                if (!ValidateCompanyInput(SelectedCompany))
+                    return;
+
+                LoadSelectedIndustryID();
+
+                _companyController.UpdateCompany(SelectedCompany);
+            }
+            else
+            {
+                if (!ValidateCompanyInput(SelectedCompany))
+                    return;
+
+                LoadSelectedIndustryID();
+
+                _companyController.EntryCompany(SelectedCompany);
+            }
+
+            RefreshCompanyList();
+        }
+
+        private void LoadSelectedIndustryID()
+        {
+            SelectedCompany.IndustryID = _industryList.FirstOrDefault(i => i.Name.Equals(SelectedCompany.IndustryName))?.IndustryID;
+        }
+
+        public ICommand Save
+        {
+            get { return new RelayCommand(SaveExecute, CanExecute); }
+        }
+
         private void DeleteExecute()
         {
             if (SelectedCompany == null)
@@ -135,6 +248,16 @@ namespace Branchenverzeichnis.ViewModel
         public ICommand Delete
         {
             get { return new RelayCommand(DeleteExecute, CanExecute); }
+        }
+
+        private void SearchExecute()
+        {
+            RefreshCompanyList();
+        }
+
+        public ICommand Search
+        {
+            get { return new RelayCommand(SearchExecute, CanExecute); }
         }
     }
 }
