@@ -47,6 +47,19 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
+
+        private ObservableCollection<ProductViewModel> _productList = new ObservableCollection<ProductViewModel>();
+
+        public ObservableCollection<ProductViewModel> ProductList
+        {
+            get { return _productList; }
+            set
+            {
+                _productList = value;
+                RaisePropertyChanged("ProductList");
+            }
+        }
+
         private ObservableCollection<string> _industryListNames = new ObservableCollection<string>();
 
         public ObservableCollection<string> IndustryListNames
@@ -66,7 +79,20 @@ namespace Branchenverzeichnis.ViewModel
             set
             {
                 _selectedCompany = value;
+                LoadCompanyProductList();
                 RaisePropertyChanged("SelectedCompany");
+            }
+        }
+
+        private ProductViewModel _selectedProduct;
+
+        public ProductViewModel SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set
+            {
+                _selectedProduct = value;
+                RaisePropertyChanged("SelectedProduct");
             }
         }
 
@@ -170,6 +196,26 @@ namespace Branchenverzeichnis.ViewModel
             foreach (var industry in industries)
             {
                 IndustryList.Add(industry);
+            }
+        }
+
+        public void LoadCompanyProductList()
+        {
+            var tmpCompanyProductList = _companyController.GetCompanyProductList();
+
+            FillProductList(tmpCompanyProductList);
+        }
+
+        private void FillProductList(IEnumerable<CompanyProductViewModel> companyProductList)
+        {
+            ProductList.Clear();
+            foreach (var companyProduct in companyProductList.Where(cp => cp.CompanyID == SelectedCompany.CompanyID))
+            {
+                ProductList.Add(new ProductViewModel()
+                {
+                    ProductID = companyProduct.ProductID,
+                    Name = companyProduct.ProductName
+                });
             }
         }
 

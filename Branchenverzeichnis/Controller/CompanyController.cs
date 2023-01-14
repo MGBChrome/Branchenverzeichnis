@@ -16,6 +16,7 @@ namespace Branchenverzeichnis.Controller
         public CompanyController()
         {
             _modelCompany = new RepoCompany();
+            _modelCompanyProduct = new RepoCompanyProduct();
         }
 
         // Read
@@ -79,8 +80,55 @@ namespace Branchenverzeichnis.Controller
 
         public void DeleteCompany(int companyId)
         {
-            _modelCompany.DeleteAllCompanyProducts(companyId);
+            _modelCompanyProduct.DeleteAllCompanyProducts(companyId);
             _modelCompany.DeleteCompany(companyId);
+        }
+
+        // Read
+        public List<CompanyProductViewModel> GetCompanyProductList()
+        {
+            var companyProductList = _modelCompanyProduct.GetCompanyProductList();
+            var companyProductViews = companyProductList.Select(c => new CompanyProductViewModel()
+            {
+                CompanyProductID = c.CompanyProductID,
+                CompanyID = c.CompanyID,
+                ProductID = c.ProductID,
+                ProductName = c.Product?.Name
+            }).ToList();
+
+            return companyProductViews;
+        }
+
+        public void EntryCompanyProduct(CompanyViewModel companyView)
+        {
+            if (companyView == null)
+            {
+                return;
+            }
+
+            Company company = MapCompanyProductViewModel(companyView);
+
+            _modelCompany.EntryCompany(company);
+        }
+
+        private static Company MapCompanyProductViewModel(CompanyViewModel companyView)
+        {
+            return new Company()
+            {
+                Name = companyView.Name,
+                Phonenumber = companyView.Phonenumber,
+                Street = companyView.Street,
+                PLZ = companyView.PLZ,
+                Location = companyView.Location,
+                CeoFirstName = companyView.CeoFirstName,
+                CeoLastName = companyView.CeoLastName,
+                IndustryID = companyView.IndustryID
+            };
+        }
+
+        public void DeleteCompanyProduct(int companyProductId)
+        {
+            _modelCompanyProduct.DeleteCompanyProduct(companyProductId);
         }
     }
 }

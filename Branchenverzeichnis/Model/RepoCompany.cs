@@ -40,13 +40,6 @@ namespace Branchenverzeichnis.Model
         }
 
         // Delete
-        public void DeleteAllCompanyProducts(int companyId)
-        {
-            var selectedCompanyProducts = _context.CompanyProduct.Where(cp => cp.CompanyID == companyId);
-            _context.CompanyProduct.RemoveRange(selectedCompanyProducts);
-            _context.SaveChanges();
-        }
-
         public void DeleteCompany(int companyId)
         {
             var company = _context.Company.SingleOrDefault(x => x.CompanyID == companyId);

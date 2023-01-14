@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BusinessObject\CompanyProductViewModel.cs" />
     <Compile Include="BusinessObject\CompanyViewModel.cs" />
     <Compile Include="BusinessObject\ProductViewModel.cs" />
     <Compile Include="Controller\CompanyController.cs" />
