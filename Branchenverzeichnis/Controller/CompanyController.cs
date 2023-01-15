@@ -99,35 +99,33 @@ namespace Branchenverzeichnis.Controller
             return companyProductViews;
         }
 
-        public void EntryCompanyProduct(CompanyViewModel companyView)
+        public void EntryCompanyProduct(CompanyProductViewModel companyProductView)
         {
-            if (companyView == null)
+            if (companyProductView == null || 
+                companyProductView.CompanyID == 0 || 
+                companyProductView.ProductID == 0)
             {
                 return;
             }
 
-            Company company = MapCompanyProductViewModel(companyView);
+            CompanyProduct companyProduct = MapCompanyProductViewModel(companyProductView);
 
-            _modelCompany.EntryCompany(company);
+            _modelCompanyProduct.EntryCompanyProduct(companyProduct);
         }
 
-        private static Company MapCompanyProductViewModel(CompanyViewModel companyView)
+        private static CompanyProduct MapCompanyProductViewModel(CompanyProductViewModel companyProductView)
         {
-            return new Company()
+            return new CompanyProduct()
             {
-                Name = companyView.Name,
-                Phonenumber = companyView.Phonenumber,
-                Street = companyView.Street,
-                PLZ = companyView.PLZ,
-                Location = companyView.Location,
-                CeoFirstName = companyView.CeoFirstName,
-                CeoLastName = companyView.CeoLastName,
-                IndustryID = companyView.IndustryID
+                CompanyID = companyProductView.CompanyID,
+                ProductID = companyProductView.ProductID
             };
         }
 
-        public void DeleteCompanyProduct(int companyProductId)
+        public void DeleteCompanyProduct(int companyId, int productId)
         {
+            CompanyProduct selectedCompanyProduct = _modelCompanyProduct.GetCompanyProductList().FirstOrDefault(cp => cp.CompanyID == companyId && cp.ProductID == productId);
+            var companyProductId = selectedCompanyProduct?.CompanyProductID ?? 0;
             _modelCompanyProduct.DeleteCompanyProduct(companyProductId);
         }
     }

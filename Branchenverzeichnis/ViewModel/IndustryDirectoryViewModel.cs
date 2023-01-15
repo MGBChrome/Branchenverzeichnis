@@ -47,6 +47,17 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
+        private ObservableCollection<string> _industryListNames = new ObservableCollection<string>();
+
+        public ObservableCollection<string> IndustryListNames
+        {
+            get { return new ObservableCollection<string>(_industryList.Select(i => i.Name)); }
+            set
+            {
+                _industryListNames = value;
+                RaisePropertyChanged("IndustryListNames");
+            }
+        }
 
         private ObservableCollection<ProductViewModel> _productList = new ObservableCollection<ProductViewModel>();
 
@@ -60,15 +71,15 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
-        private ObservableCollection<string> _industryListNames = new ObservableCollection<string>();
+        private ObservableCollection<string> _productListNames = new ObservableCollection<string>();
 
-        public ObservableCollection<string> IndustryListNames
+        public ObservableCollection<string> ProductListNames
         {
-            get { return new ObservableCollection<string>(_industryList.Select(i => i.Name)); }
+            get { return _productListNames; }
             set
             {
                 _industryListNames = value;
-                RaisePropertyChanged("IndustryListNames");
+                RaisePropertyChanged("ProductListNames");
             }
         }
 
@@ -79,12 +90,13 @@ namespace Branchenverzeichnis.ViewModel
             set
             {
                 _selectedCompany = value;
-                LoadCompanyProductList();
+                SelectedNewProduct = new ProductViewModel();
+                RefreshProductList();
                 RaisePropertyChanged("SelectedCompany");
             }
         }
 
-        private ProductViewModel _selectedProduct;
+        private ProductViewModel _selectedProduct = new ProductViewModel();
 
         public ProductViewModel SelectedProduct
         {
@@ -93,6 +105,18 @@ namespace Branchenverzeichnis.ViewModel
             {
                 _selectedProduct = value;
                 RaisePropertyChanged("SelectedProduct");
+            }
+        }
+
+        private ProductViewModel _selectedNewProduct = new ProductViewModel();
+
+        public ProductViewModel SelectedNewProduct
+        {
+            get { return _selectedNewProduct; }
+            set
+            {
+                _selectedNewProduct = value;
+                RaisePropertyChanged("SelectedNewProduct");
             }
         }
 
@@ -137,8 +161,10 @@ namespace Branchenverzeichnis.ViewModel
             _masterDataController = new MasterDataController();
             LoadCompanyList();
             LoadIndustryList();
+            LoadProductList();
             _eMode = EditMode.Edit;
         }
+
         private void RefreshCompanyList()
         {
             CompanyList.Clear();
@@ -168,7 +194,7 @@ namespace Branchenverzeichnis.ViewModel
             return true;
         }
 
-        public void LoadCompanyList(string searchWord = null)
+        private void LoadCompanyList(string searchWord = null)
         {
             var tmpCompanyList = string.IsNullOrEmpty(searchWord)
                 ? _companyController.GetCompanyList()
@@ -185,7 +211,7 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
-        public void LoadIndustryList()
+        private void LoadIndustryList()
         {
             var tmpIndustryList = _masterDataController.GetIndustryList();
             FillIndustryList(tmpIndustryList);
@@ -199,7 +225,27 @@ namespace Branchenverzeichnis.ViewModel
             }
         }
 
-        public void LoadCompanyProductList()
+        private void LoadProductList()
+        {
+            var tmpProductList = _masterDataController.GetProductList();
+            FillProductList(tmpProductList);
+        }
+
+        private void FillProductList(List<ProductViewModel> products)
+        {
+            foreach (var product in products)
+            {
+                ProductListNames.Add(product.Name);
+            }
+        }
+
+        private void RefreshProductList()
+        {
+            ProductList.Clear();
+            LoadCompanyProductList();
+        }
+
+        private void LoadCompanyProductList()
         {
             var tmpCompanyProductList = _companyController.GetCompanyProductList();
 
@@ -208,7 +254,9 @@ namespace Branchenverzeichnis.ViewModel
 
         private void FillProductList(IEnumerable<CompanyProductViewModel> companyProductList)
         {
-            ProductList.Clear();
+            if (SelectedCompany == null || SelectedCompany.CompanyID == 0)
+                return;
+
             foreach (var companyProduct in companyProductList.Where(cp => cp.CompanyID == SelectedCompany.CompanyID))
             {
                 ProductList.Add(new ProductViewModel()
@@ -296,6 +344,21 @@ namespace Branchenverzeichnis.ViewModel
             get { return new RelayCommand(DeleteExecute, CanExecute); }
         }
 
+        private void DeleteProductExecute()
+        {
+            if (SelectedProduct == null ||
+                SelectedProduct.ProductID == 0)
+                return;
+
+            _companyController.DeleteCompanyProduct(SelectedCompany.CompanyID, SelectedProduct.ProductID);
+            RefreshProductList();
+        }
+
+        public ICommand DeleteProduct
+        {
+            get { return new RelayCommand(DeleteProductExecute, CanExecute); }
+        }
+
         private void SearchExecute()
         {
             RefreshCompanyList();
@@ -304,6 +367,35 @@ namespace Branchenverzeichnis.ViewModel
         public ICommand Search
         {
             get { return new RelayCommand(SearchExecute, CanExecute); }
+        }
+
+        public void SelectNewProductExecute(string productName)
+        {
+            if (string.IsNullOrEmpty(productName) || SelectedCompany == null)
+                return;
+
+            CompanyProductViewModel newCompanyProductView = CreateNewCompanyProductViewModel(productName);
+
+            _companyController.EntryCompanyProduct(newCompanyProductView);
+            RefreshProductList();
+        }
+
+        private CompanyProductViewModel CreateNewCompanyProductViewModel(string productName)
+        {
+            var selectedProductID = GetSelectedNewProductID(productName);
+            var newCompanyProductView = new CompanyProductViewModel()
+            {
+                CompanyID = SelectedCompany?.CompanyID ?? 0,
+                ProductID = selectedProductID
+            };
+
+            return newCompanyProductView;
+        }
+
+        private int GetSelectedNewProductID(string productName)
+        {
+            var selectedProductView = _masterDataController.GetProductList().FirstOrDefault(p => p.Name.Equals(productName));
+            return selectedProductView?.ProductID ?? 0;
         }
     }
 }

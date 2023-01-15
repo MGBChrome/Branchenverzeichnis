@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Branchenverzeichnis.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,13 @@ namespace Branchenverzeichnis.View
         public CompaniesPage()
         {
             InitializeComponent();
+        }
+
+        private void TxbCompProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = (IndustryDirectoryViewModel)CompanyList.DataContext;
+            string productName = (sender as ComboBox).SelectedItem as string;
+            viewModel.SelectNewProductExecute(productName);
         }
     }
 }

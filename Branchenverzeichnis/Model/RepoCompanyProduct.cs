@@ -30,10 +30,10 @@ namespace Branchenverzeichnis.Model
         }
 
         // Delete
-        public void DeleteCompanyProduct(int companyId)
+        public void DeleteCompanyProduct(int companyProductId)
         {
-            var company = _context.Company.SingleOrDefault(x => x.CompanyID == companyId);
-            _context.Company.Remove(company);
+            var companyProduct = _context.CompanyProduct.SingleOrDefault(x => x.CompanyProductID == companyProductId);
+            _context.CompanyProduct.Remove(companyProduct);
             _context.SaveChanges();
         }
 
