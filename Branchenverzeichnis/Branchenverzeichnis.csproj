@@ -73,17 +73,25 @@
     <Compile Include="BusinessObject\CompanyViewModel.cs" />
     <Compile Include="BusinessObject\ProductViewModel.cs" />
     <Compile Include="Controller\CompanyController.cs" />
+    <Compile Include="Controller\StatisticsController.cs" />
     <Compile Include="Helper\ObservableObject.cs" />
     <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Model\RepoCompany.cs" />
     <Compile Include="Model\RepoCompanyProduct.cs" />
+    <Compile Include="Model\StatisticsModel.cs" />
     <Compile Include="ViewModel\IndustryDirectoryViewModel.cs" />
     <Compile Include="ViewModel\MasterDataViewModel.cs" />
+    <Compile Include="ViewModel\StatisticsPageViewModel.cs" />
+    <Compile Include="BusinessObject\Statistics.cs" />
+    <Compile Include="ViewModel\StatisticsViewModel.cs" />
     <Compile Include="View\CompaniesPage.xaml.cs">
       <DependentUpon>CompaniesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MasterDataPage.xaml.cs">
       <DependentUpon>MasterDataPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StatisticsPage.xaml.cs">
+      <DependentUpon>StatisticsPage.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -128,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MasterDataPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StatisticsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

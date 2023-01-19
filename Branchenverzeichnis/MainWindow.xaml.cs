@@ -24,5 +24,10 @@ namespace Branchenverzeichnis
         {
             MainFrame.Content = new MasterDataPage();
         }
+
+        private void OpenStatistics_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Content = new StatisticsPage();
+        }
     }
 }

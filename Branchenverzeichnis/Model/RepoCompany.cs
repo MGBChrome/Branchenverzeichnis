@@ -22,6 +22,27 @@ namespace Branchenverzeichnis.Model
             return _context.Company.Include("Industry").ToList();
         }
 
+        public IEnumerable<StatisticsModel> GetIndustryStatistics()
+        {
+            if (!_context.Industry.Any())
+            {
+                return Array.Empty<StatisticsModel>();
+            }
+
+            var companyList = GetCompanyList();
+            
+            var groupedIndustryList = from company in companyList
+                                 group company.IndustryID by company.Industry.Name
+                                 into newGroup
+                                 select new StatisticsModel()
+                                 {
+                                     Field = newGroup.Key,
+                                     Ncount = newGroup.Count()
+                                 };
+
+            return groupedIndustryList;
+        }
+
         // Create
         public void EntryCompany(Company company)
         {

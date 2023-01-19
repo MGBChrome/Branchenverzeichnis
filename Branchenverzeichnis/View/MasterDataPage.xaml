@@ -16,8 +16,6 @@
     <Page.Resources>
         <ViewModel:MasterDataViewModel x:Key="ViewModel"/>
 
-
-
         <Style x:Key="ToggleButtonStyle"  TargetType="{x:Type Button}">
             <Style.Triggers>
                 <Trigger Property="Background" Value="Green">
@@ -33,12 +31,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Grid.Column="0" Content="Neuer Eintrag" Margin="5,0" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+        <Label Grid.Row="0" Grid.Column="0" Content="Branchen" Margin="5,5,0,0"/>
+        <Button Grid.Row="0" Grid.Column="0" Content="Neuer Eintrag" Width="120" Margin="5,0" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                 Style="{StaticResource ToggleButtonStyle}" Background="{Binding NewIndustryEntryBackground}" Command="{Binding NewIndustryEntry}" />
         <ListView x:Name="IndustryList" Grid.Column="0" Grid.Row="1" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
                 ScrollViewer.IsDeferredScrollingEnabled="True" AlternationCount="2" Width="Auto" Margin="5,5,5,10" 
@@ -55,8 +54,9 @@
         <Button Grid.Row="3" Grid.Column="0" Width="120" Content="Speichern" Margin="5,0,5,5" HorizontalAlignment="Right" Command="{Binding SaveIndustry}"/>
         <Button Grid.Row="3" Grid.Column="0" Width="120" Content="Löschen" Margin="5,0,5,5" HorizontalAlignment="Center" Command="{Binding DeleteIndustry}" IsEnabled="{Binding IsIndustryEnabled}"/>
 
-        
-        <Button Grid.Row="0" Grid.Column="1" Content="Neuer Eintrag" Margin="5,0" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+
+        <Label Grid.Row="0" Grid.Column="1" Content="Produkte / Dienstleistungen" Margin="5,5,0,0"/>
+        <Button Grid.Row="0" Grid.Column="1" Content="Neuer Eintrag" Width="120" Margin="5,0" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                 Style="{StaticResource ToggleButtonStyle}" Background="{Binding NewProductEntryBackground}" Command="{Binding NewProductEntry}" />
         <ListView x:Name="ProductList" Grid.Row="1" Grid.Column="2" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard" SelectionMode="Single"
                 ScrollViewer.IsDeferredScrollingEnabled="True" AlternationCount="2" Width="Auto" Margin="5,5,5,10" 
