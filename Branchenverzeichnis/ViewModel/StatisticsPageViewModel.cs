@@ -76,7 +76,7 @@ namespace Branchenverzeichnis.ViewModel
 
         private static int CalculateRatio(int count, int countSum)
         {
-            return (int)((float)count / countSum * 100);
+            return (int)Math.Round((float)count / countSum * 100);
         }
     }
 }
