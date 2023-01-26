@@ -19,6 +19,7 @@ namespace Branchenverzeichnis.Controller
             _modelCompanyProduct = new RepoCompanyProduct();
         }
 
+        // Read
         public Statistics GetIndustryStatistics()
         {
             var industryStatistics = _modelCompany.GetIndustryStatistics();

@@ -10,13 +10,13 @@ namespace Branchenverzeichnis.ViewModel
     public class StatisticsViewModel : ObservableObject
     {
         private string _industryName = string.Empty;
-        public string IndustryName
+        public string CategoryName
         {
             get { return _industryName; }
             set
             {
                 _industryName = value;
-                RaisePropertyChanged("IndustryName");
+                RaisePropertyChanged("CategoryName");
             }
         }
 

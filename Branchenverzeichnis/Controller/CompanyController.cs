@@ -40,6 +40,7 @@ namespace Branchenverzeichnis.Controller
             return companyViews;
         }
 
+        // Create
         public void EntryCompany(CompanyViewModel companyView)
         {
             if (companyView == null)
@@ -52,6 +53,7 @@ namespace Branchenverzeichnis.Controller
             _modelCompany.EntryCompany(company);
         }
 
+        // Update
         public void UpdateCompany(CompanyViewModel companyView)
         {
             if (companyView == null)
@@ -78,6 +80,7 @@ namespace Branchenverzeichnis.Controller
             };
         }
 
+        // Delete
         public void DeleteCompany(int companyId)
         {
             _modelCompanyProduct.DeleteAllCompanyProducts(companyId);
@@ -99,6 +102,7 @@ namespace Branchenverzeichnis.Controller
             return companyProductViews;
         }
 
+        // Create
         public void EntryCompanyProduct(CompanyProductViewModel companyProductView)
         {
             if (companyProductView == null || 
@@ -122,9 +126,13 @@ namespace Branchenverzeichnis.Controller
             };
         }
 
+        // Delete
         public void DeleteCompanyProduct(int companyId, int productId)
         {
-            CompanyProduct selectedCompanyProduct = _modelCompanyProduct.GetCompanyProductList().FirstOrDefault(cp => cp.CompanyID == companyId && cp.ProductID == productId);
+            CompanyProduct selectedCompanyProduct = _modelCompanyProduct
+                .GetCompanyProductList()
+                .FirstOrDefault(cp => cp.CompanyID == companyId && cp.ProductID == productId);
+
             var companyProductId = selectedCompanyProduct?.CompanyProductID ?? 0;
             _modelCompanyProduct.DeleteCompanyProduct(companyProductId);
         }

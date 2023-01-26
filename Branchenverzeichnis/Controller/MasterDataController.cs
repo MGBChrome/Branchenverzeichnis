@@ -32,6 +32,7 @@ namespace Branchenverzeichnis.Controller
             return industryViews;
         }
 
+        // Create
         public void EntryIndustry(IndustryViewModel industryView)
         {
             if (industryView == null)
@@ -47,6 +48,7 @@ namespace Branchenverzeichnis.Controller
             _modelIndustry.EntryIndustry(industry);
         }
 
+        // Update
         public void UpdateIndustry(IndustryViewModel industryView)
         {
             if (industryView == null)
@@ -61,12 +63,13 @@ namespace Branchenverzeichnis.Controller
             _modelIndustry.UpdateIndustry(industry);
         }
 
+        // Delete
         public void DeleteIndustry(int industryId)
         {
             _modelIndustry.DeleteIndustry(industryId);
         }
 
-
+        // Read
         public List<ProductViewModel> GetProductList()
         {
             var products = _modelProduct.GetProductList();
@@ -79,6 +82,7 @@ namespace Branchenverzeichnis.Controller
             return productViews;
         }
 
+        // Create
         public void EntryProduct(ProductViewModel productView)
         {
             if (productView == null)
@@ -94,6 +98,7 @@ namespace Branchenverzeichnis.Controller
             _modelProduct.EntryProduct(product);
         }
 
+        // Update
         public void UpdateProduct(ProductViewModel productView)
         {
             if (productView == null)
@@ -108,6 +113,7 @@ namespace Branchenverzeichnis.Controller
             _modelProduct.UpdateProduct(product);
         }
 
+        // Delete
         public void DeleteProduct(int productId)
         {
             _modelProduct.DeleteProduct(productId);

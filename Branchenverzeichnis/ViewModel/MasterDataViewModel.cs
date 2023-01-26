@@ -137,7 +137,7 @@ namespace Branchenverzeichnis.ViewModel
             return true;
         }
 
-        public void LoadIndustryList()
+        private void LoadIndustryList()
         {
             var tmpIndustryList = _masterDataController.GetIndustryList();
 
@@ -242,7 +242,7 @@ namespace Branchenverzeichnis.ViewModel
             return true;
         }
 
-        public void LoadProductList()
+        private void LoadProductList()
         {
             var tmpProductList = _masterDataController.GetProductList();
 

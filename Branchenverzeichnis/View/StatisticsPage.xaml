@@ -33,7 +33,7 @@
                 ItemsSource="{Binding IndustryStatisticsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="190" Header="Branche" DisplayMemberBinding="{Binding IndustryName}"/>
+                    <GridViewColumn Width="190" Header="Branche" DisplayMemberBinding="{Binding CategoryName}"/>
                     <GridViewColumn Width="80" Header="Anteil [%]" DisplayMemberBinding="{Binding Ratio}"/>
                     <GridViewColumn Width="270" Header="Anteil">
                         <GridViewColumn.CellTemplate>
@@ -52,7 +52,7 @@
                 ItemsSource="{Binding ProductStatisticsList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Width="190" Header="Produkt/Dienstleistung" DisplayMemberBinding="{Binding IndustryName}"/>
+                    <GridViewColumn Width="190" Header="Produkt/Dienstleistung" DisplayMemberBinding="{Binding CategoryName}"/>
                     <GridViewColumn Width="80" Header="Anteil [%]" DisplayMemberBinding="{Binding Ratio}"/>
                     <GridViewColumn Width="270" Header="Anteil">
                         <GridViewColumn.CellTemplate>

@@ -45,13 +45,13 @@ namespace Branchenverzeichnis.ViewModel
             LoadProductStatisticsList();
         }
 
-        public void LoadIndustryStatisticsList()
+        private void LoadIndustryStatisticsList()
         {
             var industryStatistics = _statisticsController.GetIndustryStatistics();
             FillStatisticsList(industryStatistics, _industryStatisticsList);
         }
 
-        public void LoadProductStatisticsList()
+        private void LoadProductStatisticsList()
         {
 
             var productStatistics = _statisticsController.GetProductStatistics();
@@ -68,7 +68,7 @@ namespace Branchenverzeichnis.ViewModel
             {
                 statisticsList.Add(new StatisticsViewModel()
                 {
-                    IndustryName = item.Theme,
+                    CategoryName = item.Theme,
                     Ratio = CalculateRatio(item.Count, countSum)
                 });
             }
