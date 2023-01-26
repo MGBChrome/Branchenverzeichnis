@@ -83,7 +83,7 @@
     <Compile Include="ViewModel\MasterDataViewModel.cs" />
     <Compile Include="ViewModel\StatisticsPageViewModel.cs" />
     <Compile Include="BusinessObject\Statistics.cs" />
-    <Compile Include="ViewModel\StatisticsViewModel.cs" />
+    <Compile Include="BusinessObject\StatisticsViewModel.cs" />
     <Compile Include="View\CompaniesPage.xaml.cs">
       <DependentUpon>CompaniesPage.xaml</DependentUpon>
     </Compile>
