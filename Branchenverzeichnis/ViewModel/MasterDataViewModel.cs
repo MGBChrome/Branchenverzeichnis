@@ -211,8 +211,16 @@ namespace Branchenverzeichnis.ViewModel
             if (SelectedIndustry == null)
                 return;
 
-            _masterDataController.DeleteIndustry(SelectedIndustry.IndustryID);
-            RefreshIndustryList();
+            try
+            {
+                _masterDataController.DeleteIndustry(SelectedIndustry.IndustryID);
+                RefreshIndustryList();
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show($"Die ausgewählte Branche kann nicht gelöscht werden.", "Hinweis", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         public ICommand DeleteIndustry
@@ -316,8 +324,16 @@ namespace Branchenverzeichnis.ViewModel
             if (SelectedProduct == null)
                 return;
 
-            _masterDataController.DeleteProduct(SelectedProduct.ProductID);
-            RefreshProductList();
+            try
+            {
+                _masterDataController.DeleteProduct(SelectedProduct.ProductID);
+                RefreshProductList();
+            }
+            catch (System.Exception)
+            {
+                MessageBox.Show($"Das ausgewählte Produkt / Dienstleistung kann nicht gelöscht werden.", "Hinweis", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         public ICommand DeleteProduct
