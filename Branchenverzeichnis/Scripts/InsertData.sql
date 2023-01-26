@@ -1,11 +1,3 @@
-/*
-	DELETE CompanyProduct
-	DELETE Company
-	DELETE Product
-	DELETE Industry
-*/
-
-
 USE [IndustryDirectory]
 GO
 
